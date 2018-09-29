@@ -1,6 +1,11 @@
-.DS_Store
+# Development Generated
 node_modules
-keys
 public/transpiled
-coverage
 package-lock.json
+coverage
+
+# Environment Generated
+.DS_Store
+
+# Sensitive Material
+keys
