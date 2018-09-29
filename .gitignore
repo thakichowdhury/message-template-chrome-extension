@@ -1,6 +1,6 @@
 .DS_Store
 node_modules
 keys
-public/bundle
+public/transpiled
 coverage
 package-lock.json
