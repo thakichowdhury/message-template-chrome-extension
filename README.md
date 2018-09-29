@@ -12,6 +12,8 @@ __ client
 __ database
 __ package.json
 __ public
+   index.html
+   |__ transpiled
 __ server
 ```
 
