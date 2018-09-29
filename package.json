@@ -4,7 +4,9 @@
   "description": "Boilerplate code for future projects",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "setup": "npm install && webpack --mode development",
+    "build": "",
+    "test": ""
   },
   "repository": {
     "type": "git",
