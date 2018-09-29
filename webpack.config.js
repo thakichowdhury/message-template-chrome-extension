@@ -3,7 +3,7 @@ const path = require('path');
 const ENTRY = path.join(__dirname, 'client', 'index.jsx');
 
 const OUTPUT = {
-  path: path.resolve(__dirname, 'public'),
+  path: path.resolve(__dirname, 'public', 'transpiled'),
   filename: 'bundle.js',
 };
 
