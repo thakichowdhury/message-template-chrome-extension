@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "setup": "npm install && webpack --mode development",
+    "start": "nodemon server/server.js",
     "build": "webpack --mode development",
     "test": "jest"
   },
@@ -21,7 +22,10 @@
   "homepage": "https://github.com/chowdhurythaki/project-boilerplate#readme",
   "dependencies": {
     "axios": "^0.18.0",
+    "body-parser": "^1.18.3",
     "express": "^4.16.3",
+    "file-system": "^2.2.2",
+    "pg": "^7.5.0",
     "prop-types": "^15.6.2",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
@@ -45,6 +49,7 @@
     "jest": "^23.6.0",
     "jest-cli": "^23.6.0",
     "jest-enzyme": "^6.1.2",
+    "nodemon": "^1.18.4",
     "style-loader": "^0.23.0",
     "supertest": "^3.3.0",
     "webpack": "^4.20.2",
