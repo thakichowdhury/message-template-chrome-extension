@@ -1,64 +1,52 @@
 import React, { Component } from 'react';
 
-import Input from './Input';
-import styles from '../styles/Letter.css';
+import styles from '../../styles/Letter.css';
 
-class LetterUpdater extends Component {
-  constructor({ templatePhrases, templateName, templateBody, handleSubmit }) {
-    super();
+import Input from '../presentational/Input';
+import Button from '../presentational/Button';
+import Letter from '../presentational/Letter';
 
-    this.handleChange = this.handleChange.bind(this);
-    this.templatePhrases = templatePhrases;
-    this.templateName = templateName;
-    this.templateBody = templateBody;
-    this.handleSubmit = handleSubmit;
-
-    this.phrases = templatePhrases.map(phrase =>
-      (
-        <Input name={phrase} placeholder={phrase} value={this.state[phrase]} handleChange={this.handleChange} />
-      )
-    );
+class LetterTemplate extends Component {
+  constructor(props) {
+    super(props);
   }
 
-  componentDidMount () {
-    this.templatePhrases.forEach(phrase => {
-      const state = {};
-      state[phrase] = '';
-      this.setState(state);
-    })
+  renderInput (variable, handleChange) {
+    return (
+      <Input
+        name={variable.name}
+        key={variable.id}
+        data={variable.id}
+        value={variable.value}
+        handleChange={handleChange}
+      />
+    )
   }
-
-  handleChange(event) {
-    const { name, value } = event.target;
-    const change = {};
-
-    change[name] = value;
-
-    this.setState(change)
-  }
-
 
   render () {
+    const {
+      templatePhrases,
+      letterInfo,
+      currentLetter,
+      handleChange,
+      copyTextToClipboard,
+      handleClick,
+    } = this.props;
     return (
       <div>
-        <Input
-          name='currentCoverLetterTemplateName'
-          placeholder='Name of Cover Letter'
-          value={this.templateName}
-          handleChange={this.handleChange}
-        />
-        {this.phrases}
-        <textarea
-          name='currentCoverLetterTemplateBody'
-          defaultValue={this.templateBody}
-          className={styles.letter_template}
-          onChange={this.handleChange}
-        />
-        <br />
-        <button onClick={this.handleSubmit} >Save</button>
+        {templatePhrases.map((variable) => this.renderInput(variable, handleChange))}
+        {
+          currentLetter !== '' &&
+          <Letter
+            info={letterInfo}
+            value={currentLetter}
+            handleClick={copyTextToClipboard}
+          />
+        }
+        <Button children='Submit' handleClick={handleClick} />
       </div>
     )
   }
 };
 
-export default LetterUpdater;
+export default LetterTemplate;

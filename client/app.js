@@ -5,7 +5,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 // import root app
-import App from './components/App';
+import App from './components/container/App';
 
 const MOUNT_NODE = document.getElementById('app');
 
