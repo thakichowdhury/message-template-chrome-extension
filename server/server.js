@@ -3,7 +3,6 @@ const app = express();
 const bodyParser = require('body-parser');
 const path = require('path');
 
-const { letter } = require('../client/helpers');
 const {
   saveLetterToDrive,
   saveCoverLetterTemplate,
