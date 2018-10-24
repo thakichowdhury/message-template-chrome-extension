@@ -1,25 +1,47 @@
 const fs = require('fs');
 const path = require('path');
+const homeDir = require('os').homedir();
 
 const pool = require('../database/connection');
 
-const { letter } = require('../client/helpers');
+const { sampleLetterTemplate: letter } = require('../client/sample_data/sampleLetterTemplate');
+
+const extractTemplateValues = values => (
+  req.body.reduce((accum, current) => {
+    const { name, value } = current;
+    accum[name] = value;
+    return accum;
+  }, {})
+);
+
+const renderValuesToLetter = (templateValues, letter) => {
+  const newLetter = letter.slice().replace(/(\[|\])/g, '');
+
+  return templateValues.reduce((accum, current) => {
+    const { name, value } = current;
+    accum = accum.replace(new RegExp(name, 'g'), value);
+    return accum;
+  }, newLetter)
+};
 
 const saveLetterToDrive = (req, res) => {
-  const { company, values, tech } = req.body;
+  const { body } = req;
+
+  const renderedLetter = renderValuesToLetter(body, letter);
+  
+  const company = body.filter(val => val.name === 'company')[0].value;
   const formattedCompanyName = company.replace(/ /g, `_`);
 
-  const complete = letter(company, values, tech);
-  const pathToLetter = path.resolve('../../../', 'career', 'cover_letters',`${formattedCompanyName}-cover_letter.docx`);
+  const pathToLetter = path.resolve(homeDir, 'Documents', 'career', '_cover_letters',`${formattedCompanyName}-cover_letter.docx`);
   let status = `File successfully written to ${pathToLetter}`;
 
-  fs.writeFile(pathToLetter, complete, err => {
-    throw err;
+  fs.writeFile(pathToLetter, renderedLetter, err => {
+    console.log(err);
   });
 
   res.send({
     status: status,
-    letter: complete,
+    letter: renderedLetter,
   });
 };
 

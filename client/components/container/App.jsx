@@ -1,39 +1,30 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
-import Input from '../presentational/Input';
-import Letter from '../presentational/Letter';
-import HomeScreen from '../presentational/HomeScreen';
-import LetterTemplate from './LetterTemplate';
-
 import { copyTextToClipboard, findTemplatePhrases } from '../../helpers';
+import { sampleLetterTemplate, sampleTemplatePhrases } from '../../sample_data/sampleLetterTemplate';
+
+import LetterTemplate from './LetterTemplate';
 
 class App extends Component {
   constructor() {
     super();
 
-    this.handleUsernameChange = this.handleUsernameChange.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.saveCoverLetterTemplate = this.saveCoverLetterTemplate.bind(this);
 
     this.state = {
       user: '',
-      templatePhrases: [],
+      templatePhrases: sampleTemplatePhrases,
       currentLetter: '',
       currentCoverLetterTemplateName: '',
       currentCoverLetterTemplateBody: '',
     }
   }
 
-  handleUsernameChange(event) {
-    const { value } = event.target;
-    this.setState({
-      user: value,
-    })
-  }
-
-  handleChange(event) {
+  handleChange (event) {
     const { name, value } = event.target;
 
     const change = {};
@@ -42,17 +33,23 @@ class App extends Component {
     this.setState(change)
   }
 
+  handleInputChange (e) {
+    const { name, value, dataset: {key} } = e.target;
+    const { templatePhrases } = this.state;
+    console.log(templatePhrases);
+    templatePhrases[key].value = value;
+    this.setState({
+      templatePhrases: templatePhrases
+    })
+  }
+
   onSubmit() {
     this.setState({
       currentLetter: '',
     })
-    const { company, values, tech } = this.state;
+    const { templatePhrases } = this.state;
 
-    axios.post('/makeLetter', {
-        company,
-        values,
-        tech,
-      })
+    axios.post('/makeLetter', templatePhrases)
       .then(res => {
         const { status, letter } = res.data;
         console.log(status);
@@ -95,18 +92,20 @@ class App extends Component {
   render () {
     const {
       user,
-      company,
-      values,
-      tech,
       currentLetter,
       templatePhrases,
-      currentCoverLetterTemplateName,
-      currentCoverLetterTemplateBody,
     } = this.state;
 
     return (
       <div>
-        Fill in
+        <LetterTemplate
+          templatePhrases={templatePhrases}
+          letterInfo={'currentLetter'}
+          currentLetter={currentLetter}
+          handleChange={this.handleInputChange}
+          copyTextToClipboard={copyTextToClipboard}
+          handleClick={this.onSubmit}
+        />
       </div>
     )
   }

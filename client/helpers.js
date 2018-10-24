@@ -1,6 +1,6 @@
 module.exports = {
-  copyTextToClipboard: (nameOfClass) => {
-    var letter = document.getElementsByClassName(nameOfClass)[0];
+  copyTextToClipboard: (id) => {
+    var letter = document.getElementById(id);
     letter.select();
     document.execCommand('copy');
   },
