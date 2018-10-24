@@ -2,34 +2,26 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const path = require('path');
-const fs = require('fs');
 
 const { letter } = require('../client/helpers');
+const {
+  saveLetterToDrive,
+  saveCoverLetterTemplate,
+} = require('./helpers');
+
+// Server Set Up
 const PORT = process.env.port || 3000;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/', express.static(path.resolve(__dirname, '../public')));
 
-app.post('/makeLetter', (req, res) => {
-  const { company, values, tech } = req.body;
+// CRUD functions
+app.post('/makeLetter', saveLetterToDrive);
 
-  company = company.replace(/ /g, `_`);
+app.post('/saveLetter', saveCoverLetterTemplate);
 
-  const complete = letter(company, values, tech);
-  const pathToLetter = path.resolve('../../../', 'career', 'cover_letters',`${company}-cover_letter.docx`);
-  let status = `File successfully written to ${pathToLetter}`;
-
-  fs.writeFile(pathToLetter, complete, err => {
-    status = err;
-  });
-
-  res.send({
-    status: status,
-    letter: complete,
-  });
-})
-
+// Server Listen at PORT
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`)
 })
