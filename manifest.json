@@ -1,0 +1,20 @@
+{
+  "name": "Snippet Manager",
+  "description": "Create, save, and access your snippets!",
+  "version": "1.0",
+  "browser_action": {
+    "default_title": "Snippet Manager",
+    "default_popup": "public/index.html"
+  },
+  "icons": {
+    "16": "public/assets/images/pp_16.png",
+    "48": "public/assets/images/pp_64.png",
+    "128": "public/assets/images/pp_128.png"
+  },
+  "permissions": [
+    "*://*/*",
+    "tabs",
+    "webNavigation"
+  ],
+  "manifest_version": 2
+}
