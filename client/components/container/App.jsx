@@ -47,9 +47,10 @@ class App extends Component {
     this.setState({
       currentLetter: '',
     })
+
     const { templatePhrases } = this.state;
 
-    axios.post('/makeLetter', templatePhrases)
+    axios.post('http://ec2-3-16-15-48.us-east-2.compute.amazonaws.com:3000/makeLetter', templatePhrases)
       .then(res => {
         const { status, letter } = res.data;
         console.log(status);
@@ -60,6 +61,9 @@ class App extends Component {
       })
       .catch(err => {
         console.log(err);
+        this.setState({
+          currentLetter: err
+        })
       });
   }
 
